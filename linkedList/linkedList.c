@@ -49,10 +49,12 @@ void printList(Node *head) {
 }
 
 void freeList(Node *head) {
-  Node *temp = head;
+  Node *temp;
 
   while (temp != NULL) {
-    temp = temp->next;
+    temp = head;
+    head = head-> next;
+    free(temp);
   }
 }
 
