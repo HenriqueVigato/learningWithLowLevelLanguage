@@ -69,6 +69,7 @@ void freeList(Node *head) {
   }
 }
 
+// vai ate um ponto da lista e volta ate o comeco
 void testReturning(Node *head, int value) {
   Node *temp = head;
 
@@ -105,4 +106,6 @@ int main() {
 
   printf("Testando andar para tras no meio da lista \n");
   testReturning(head, 220);
+
+  freeList(head);
 }
