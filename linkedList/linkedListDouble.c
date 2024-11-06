@@ -48,6 +48,28 @@ Node *insertAtEnd(Node *head, int data) {
   return head;
 }
 
+Node *insertAtMiddle(Node *head, int data, int previous) {
+  Node *newNode = createNode(data);
+
+  if (head == NULL) {
+    return NULL;
+  }
+
+  Node *temp = head;
+
+  while (temp->data != previous) {
+    temp = temp->next;
+  }
+
+  newNode->next = temp->next;
+  newNode->previous = temp;
+
+  temp->next->previous = newNode;
+  temp->next = newNode;
+
+  return head;
+}
+
 void printList(Node *head) {
   Node *temp = head;
 
@@ -106,6 +128,12 @@ int main() {
 
   printf("Testando andar para tras no meio da lista \n");
   testReturning(head, 220);
+
+  head = insertAtMiddle(head, 222, 200);
+  head = insertAtMiddle(head, 333, 300);
+  head = insertAtMiddle(head, 444, 400);
+  printf("Testando inseri no meio da lista! \n");
+  printList(head);
 
   freeList(head);
 }
