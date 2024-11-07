@@ -70,6 +70,44 @@ Node *insertAtMiddle(Node *head, int data, int previous) {
   return head;
 }
 
+// TODO: criar uma funcao que delete os itens da lista ligada.
+Node *deleteItem(Node *head, int target) {
+  Node *temp = head;
+
+  if (head == NULL) {
+    return NULL;
+  }
+
+  // Caso o item a ser deletado e o primeiro da lista
+  if (head->data == target) {
+    temp->next->previous = NULL;
+    return temp->next;
+  }
+
+  while (temp->next->data != target) {
+    temp = temp->next;
+  }
+
+  Node *to_be_deleted = temp->next;
+
+  // verifica se o item apos oque vai ser deletado e nulo ou nao
+  if (temp->next->next == NULL) {
+    temp->next = NULL;
+    return head;
+  }
+
+  temp->next->next->previous = temp;
+  temp->next = temp->next->next;
+
+  free(to_be_deleted);
+
+  return head;
+}
+
+// TODO: criar um metodo para organizar a lista ligada
+// TODO: criar uma metodo para busacar itens da lista ligada
+//
+
 void printList(Node *head) {
   Node *temp = head;
 
@@ -114,7 +152,6 @@ int main() {
   head = insertAtBeginning(head, 200);
   head = insertAtBeginning(head, 300);
   head = insertAtBeginning(head, 400);
-
   printf("Lista apos insercao no inicio \n");
   printList(head);
 
@@ -122,8 +159,7 @@ int main() {
   head = insertAtEnd(head, 220);
   head = insertAtEnd(head, 330);
   head = insertAtEnd(head, 440);
-
-  printf("Lista apos isnercao no final \n");
+  printf("Lista apos insercao no final \n");
   printList(head);
 
   printf("Testando andar para tras no meio da lista \n");
@@ -132,7 +168,13 @@ int main() {
   head = insertAtMiddle(head, 222, 200);
   head = insertAtMiddle(head, 333, 300);
   head = insertAtMiddle(head, 444, 400);
-  printf("Testando inseri no meio da lista! \n");
+  printf("Testando inserir no meio da lista! \n");
+  printList(head);
+
+  head = deleteItem(head, 444);
+  head = deleteItem(head, 440);
+  head = deleteItem(head, 400);
+  printf("Apos excluir algum iten \n");
   printList(head);
 
   freeList(head);
