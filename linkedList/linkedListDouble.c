@@ -70,7 +70,6 @@ Node *insertAtMiddle(Node *head, int data, int previous) {
   return head;
 }
 
-// TODO: criar uma funcao que delete os itens da lista ligada.
 Node *deleteItem(Node *head, int target) {
   Node *temp = head;
 
@@ -106,7 +105,6 @@ Node *deleteItem(Node *head, int target) {
 
 // TODO: criar um metodo para organizar a lista ligada
 // TODO: criar uma metodo para busacar itens da lista ligada
-//
 
 void printList(Node *head) {
   Node *temp = head;
