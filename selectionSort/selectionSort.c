@@ -2,14 +2,20 @@
 
 void sort(int *array, int sizeOfArray) {
   int temp, min;
+  for (int i = 0; i < sizeOfArray; i++) {
+    min = i;
 
-  for (int i; i < sizeOfArray; i++) {
-    min = array[i];
-
-    for (int j; j < sizeOfArray; i++) {
-      if (array[j] < array[i]) {
-        min = array[j];
+    for (int j = i; j < sizeOfArray; j++) {
+      if (array[j] < array[min]) {
+        min = j;
       }
+    }
+
+    if (i != min) {
+
+      temp = array[i];
+      array[i] = array[min];
+      array[min] = temp;
     }
   }
 }
