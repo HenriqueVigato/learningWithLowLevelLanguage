@@ -77,7 +77,7 @@ void freeMemList(Node *head) {
   }
 }
 
-int main() {
+void testLinkedList() {
   Node *head = NULL;
   head = insertAtBegining(head, 10);
   assert(head->data == 10);
@@ -93,3 +93,60 @@ int main() {
   printList(head);
   freeMemList(head);
 }
+
+//     Sorting the linked list
+Node *createATestList() {
+  Node *head = NULL;
+  int data[17] = {3,  4,  5,   61, 1,  2,  8,   9,  23,
+                  11, 24, 576, 75, 45, 33, 221, 256};
+  for (int i = 0; i < 17; i++) {
+    head = insertAtBegining(head, data[i]);
+  }
+  return head;
+}
+
+int sizeOfList(Node *head) {
+  Node *temp = head;
+  int sizeOf = 0;
+  while (temp != NULL) {
+    sizeOf++;
+    temp = temp->next;
+  }
+  return sizeOf;
+}
+
+void swap(Node *addr1, Node *addr2) {
+  int temp = addr1->data;
+  addr1->data = addr2->data;
+  addr2->data = temp;
+}
+
+void bubblesort(Node *head) {
+  int size = sizeOfList(head);
+  for (int i = 0; i < size; i++) {
+    Node *temp = head;
+    while (temp->next != NULL) {
+      if (temp->data > temp->next->data) {
+        if (temp == head) {
+          swap(temp, temp->next);
+        } else {
+          swap(temp, temp->next);
+        }
+      } else {
+        temp = temp->next;
+      }
+    }
+  }
+}
+
+int main() {
+  Node *test = createATestList();
+  printList(test);
+
+  assert(sizeOfList(test) == 17);
+
+  bubblesort(test);
+  printList(test);
+}
+// main function
+// int main() { testLinkedList(); }
