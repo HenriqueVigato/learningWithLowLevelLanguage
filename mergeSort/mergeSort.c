@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 
 void mergeSortRecursion(int a[], int l, int r);
 void mergeSort(int array[], int size);
@@ -22,27 +21,44 @@ void mergeSortRecursion(int a[], int l, int r) {
 
 void merge(int a[], int l, int m, int r) {
   int leftSize = m - l + 1;
-  int rightSize = m - r;
+  int rightSize = r - m;
 
   int arrLeft[leftSize];
   int arrRight[rightSize];
 
   int i, j, k;
 
-  for (i = 0; i < leftSize; i++) {
+  for (int i = 0; i < leftSize; i++) {
     arrLeft[i] = a[l + i];
   }
-  for (j = 0; j < rightSize; j++) {
-    arrRight[j] = a[r + 1 + j];
+  for (int j = 0; j < rightSize; j++) {
+    arrRight[j] = a[m + 1 + j];
   }
 
-  for (i = 0, j = 0, k = l; k < rightSize; k++) {
-    if ((i >))
+  for (i = 0, j = 0, k = l; k <= r; k++) {
+    if ((i < leftSize) && (j >= rightSize || arrLeft[i] <= arrRight[j])) {
+      a[k] = arrLeft[i];
+      i++;
+    } else {
+      a[k] = arrRight[j];
+      j++;
+    }
   };
 }
 
 int main() {
   int array[15] = {43, 27, 89, 12, 55, 76, 31, 94, 8, 67, 22, 15, 83, 49, 60};
   int size = sizeof(array) / sizeof(array[0]);
+
+  for (int i = 0; i < size; i++) {
+    printf("%d ", array[i]);
+  }
+  printf("\n");
+
   mergeSort(array, size);
+
+  for (int i = 0; i < size; i++) {
+    printf("%d ", array[i]);
+  }
+  printf("\n");
 }
