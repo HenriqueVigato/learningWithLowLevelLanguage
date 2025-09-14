@@ -20,7 +20,7 @@ int printing_to_the_end(FILE *textPtr) {
   return 0;
 }
 
-int main() {
+int getFromFile() {
   FILE *txtPtr;
   txtPtr = fopen("./messages.txt", "r");
 
@@ -30,5 +30,10 @@ int main() {
   printing_to_the_end(txtPtr);
 
   fclose(txtPtr);
+  return 0;
+}
+
+int main() {
+  getFromFile();
   return 0;
 }
