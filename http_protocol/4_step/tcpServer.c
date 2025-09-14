@@ -17,16 +17,16 @@ int main(void) {
   int result = bind(server_fd, (struct sockaddr *)&address, sizeof(address));
 
   if (result == 0) {
-    printf("✅ Bind realizado com sucesso!\n");
+    printf("✅ Bind realizado com sucesso!\n\n");
   } else {
-    printf("❌ Erro no bind!\n");
+    printf("❌ Erro no bind!\n\n");
     perror("bind");
     return -1;
   }
 
   listen(server_fd, 3);
 
-  printf("Server is running and listening on port %d...\n", port);
+  printf("Server is running and listening on port %d...\n\n", port);
 
   while (1) {
     int addrlen = sizeof(address);
