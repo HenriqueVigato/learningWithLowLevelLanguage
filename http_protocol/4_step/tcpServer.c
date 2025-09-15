@@ -1,9 +1,31 @@
 #include <arpa/inet.h>
+#include <errno.h>
 #include <netinet/in.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
+
+char *readFile(void) {
+  FILE *txtPtr;
+
+  txtPtr = fopen("./messages.txt", "r");
+
+  if (txtPtr == NULL) {
+    printf("Erro: %s\n", strerror(errno));
+  }
+
+  char *myString = malloc(1024 * sizeof(char));
+
+  if (fgets(myString, 1024, txtPtr) != NULL) {
+    return myString;
+  } else {
+    free(myString);
+    free(txtPtr);
+    return NULL;
+  }
+}
 
 int main(void) {
   char ipAddress[] = "127.0.0.1";
@@ -33,13 +55,20 @@ int main(void) {
     int new_socket =
         accept(server_fd, (struct sockaddr *)&address, (socklen_t *)&addrlen);
     if (new_socket < 0) {
-      perror("Failed to accept connection");
+      perror("Failed to accept connection\n");
       continue;
     }
-    printf("connection accept");
+    printf("connection accept\n");
 
-    char *response = "Ola do servidor TCP";
-    write(new_socket, response, strlen(response));
+    // char *response = "Ola do servidor TCP";
+    // write(new_socket, response, strlen(response));
+
+    char *menssagem = "";
+    while (menssagem != NULL) {
+      menssagem = readFile();
+      printf("Menssagem: %s\n", menssagem);
+      write(new_socket, menssagem, strlen(menssagem));
+    }
 
     close(new_socket);
     printf("connection close");
