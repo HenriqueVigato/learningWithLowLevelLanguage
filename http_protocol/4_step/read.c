@@ -7,24 +7,6 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-int printing_to_the_end(FILE *textPtr) {
-  char myString[180] = "";
-  char myMessage[9];
-  while (fgets(myMessage, 9, textPtr) != NULL) {
-    char *quebra = strchr(myMessage, '\n');
-
-    if (quebra != NULL) {
-      *quebra = '\0';
-      strcat(myString, myMessage);
-      printf("read: %s\n", myString);
-      myString[0] = '\0';
-    } else {
-      strcat(myString, myMessage);
-    }
-  }
-  return 0;
-}
-
 int tcpClient(const char *addr, const int port) {
   int client_fd = socket(AF_INET, SOCK_STREAM, 0);
   if (client_fd < 0) {
@@ -50,13 +32,22 @@ int tcpClient(const char *addr, const int port) {
 }
 
 void printData(int client) {
-  char *buffer = malloc(8 * sizeof(char));
+  char *buffer = malloc(9 * sizeof(char));
   while (1) {
-    int dataReceived = recv(client, buffer, 8, MSG_DONTWAIT);
+    // limpa o buffer para nao ter nada
+    memset(buffer, 0, 9 * sizeof(char));
 
+    int dataReceived = recv(client, buffer, (9 * sizeof(char)) - 1, 0);
     if (dataReceived < 0) {
+      if (errno == EAGAIN || errno == EWOULDBLOCK) {
+        printf("\nBuffer do sistema vazio!\n");
+      } else {
+        perror("Erro no recv");
+        free(buffer);
+      }
       break;
     } else if (dataReceived == 0) {
+      free(buffer);
       break;
     }
 
@@ -66,8 +57,10 @@ void printData(int client) {
       printf("%s", buffer);
       printf("\n");
       printf("read: %s", newLine + 1);
+      fflush(stdout);
     } else {
       printf("%s", buffer);
+      fflush(stdout);
     }
   }
 }
@@ -78,6 +71,7 @@ int main() {
 
   int clientConnection = tcpClient(addr, port);
   printf("read: ");
+  fflush(stdout);
   printData(clientConnection);
 
   close(clientConnection);
