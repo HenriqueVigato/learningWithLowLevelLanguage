@@ -7,14 +7,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-char *readFile(void) {
-  FILE *txtPtr;
-
-  txtPtr = fopen("./messages.txt", "r");
-
-  if (txtPtr == NULL) {
-    printf("Erro: %s\n", strerror(errno));
-  }
+char *readFile(FILE *txtPtr) {
 
   char *myString = malloc(1024 * sizeof(char));
 
@@ -22,12 +15,22 @@ char *readFile(void) {
     return myString;
   } else {
     free(myString);
-    free(txtPtr);
     return NULL;
   }
 }
+FILE *openFile(char *path) {
+  FILE *txtPtr;
+
+  txtPtr = fopen(path, "r");
+
+  if (txtPtr == NULL) {
+    printf("Erro: %s\n", strerror(errno));
+  }
+  return txtPtr;
+}
 
 int main(void) {
+  // TCP server
   char ipAddress[] = "127.0.0.1";
   int port = 43000;
   int server_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -49,7 +52,6 @@ int main(void) {
   listen(server_fd, 3);
 
   printf("Server is running and listening on port %d...\n\n", port);
-
   while (1) {
     int addrlen = sizeof(address);
     int new_socket =
@@ -60,18 +62,14 @@ int main(void) {
     }
     printf("connection accept\n");
 
-    // char *response = "Ola do servidor TCP";
-    // write(new_socket, response, strlen(response));
-
+    FILE *msg = openFile("./messages.txt");
     char *menssagem = "";
-    while (menssagem != NULL) {
-      menssagem = readFile();
-      printf("Menssagem: %s\n", menssagem);
+    while ((menssagem = readFile(msg)) != NULL) {
       write(new_socket, menssagem, strlen(menssagem));
     }
-
     close(new_socket);
-    printf("connection close");
+    fclose(msg);
+    printf("connection close\n");
   }
 
   close(server_fd);
