@@ -1,3 +1,4 @@
+#include "read.h"
 #include <arpa/inet.h>
 #include <errno.h>
 #include <netinet/in.h>
@@ -65,6 +66,14 @@ void printData(int client) {
   }
 }
 
+int test(void) {
+  int numero = 1;
+  int num = 5;
+
+  return numero + num;
+}
+
+#ifndef TESTING
 int main() {
   char addr[] = "127.0.0.1";
   int port = 43000;
@@ -79,3 +88,4 @@ int main() {
 
   return 0;
 }
+#endif
